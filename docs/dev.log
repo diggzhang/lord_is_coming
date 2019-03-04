@@ -1,0 +1,15 @@
+```shell
+pyenv local face_dect_env
+```
+
+[How to install dlib v19.9 or newer (w/ python bindings) from github on macOS and Ubuntu](https://gist.github.com/ageitgey/629d75c1baac34dfa5ca2a1928a7aeaf)
+
+```shell
+brew install cmake
+git clone https://github.com/davisking/dlib.git
+cd dlib
+mkdir build; cd build; cmake ..; cmake --build .
+cd ..
+python3 setup.py install
+```
+
