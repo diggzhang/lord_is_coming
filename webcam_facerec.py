@@ -1,4 +1,6 @@
 import face_recognition
+import json
+import csv
 import cv2
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
@@ -43,12 +45,29 @@ face_encodings = []
 face_names = []
 process_this_frame = True
 
-class write_to_file():
+
+def load_db():
+    sign_in_list = []
+    with open('sign-in-form.csv') as csv_file:
+        reader = csv.reader(csv_file)
+        for row in reader:
+            member = {'name': row[0], 'times': row[1]}
+            sign_in_list.append(member)
+    return sign_in_list
+
+
+class WriteToFile:
     def __init__(self, data_lst, file_type):
-        print(data_lst, file_type)
+        self.data_lst = data_lst
+        self.file_type = file_type
 
     def save(self):
-        print('yes i save')
+        if 'csv' == self.file_type:
+            print('hello csv')
+        elif 'json' == self.file_type:
+            print('hello json')
+        print(self.data_lst)
+
 
 while True:
     # Grab a single frame of video
@@ -81,7 +100,6 @@ while True:
 
     process_this_frame = not process_this_frame
 
-
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
@@ -103,10 +121,11 @@ while True:
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        json_dst = write_to_file(face_names, 'json')
-        csv_dst = write_to_file(face_names, 'csv')
-        json_dst.save()
-        csv_dst.save()
+        members = load_db()
+        # json_dst = WriteToFile(face_names, 'json')
+        # csv_dst = WriteToFile(face_names, 'csv')
+        # json_dst.save()
+        # csv_dst.save()
         break
 
 # Release handle to the webcam
