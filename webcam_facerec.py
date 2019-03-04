@@ -2,6 +2,7 @@ import face_recognition
 import json
 import csv
 import cv2
+import sqlite3
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -14,6 +15,9 @@ import cv2
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
+
+conn = sqlite3.connect('sign-in.db')
+c = conn.cursor()
 
 # Load a sample picture and learn how to recognize it.
 obama_image = face_recognition.load_image_file("obama.jpg")
@@ -36,13 +40,14 @@ known_face_encodings = [
 known_face_names = [
     "Barack Obama",
     "Joe Biden",
-    "Xingze"
+    "xingze"
 ]
 
 # Initialize some variables
 face_locations = []
 face_encodings = []
 face_names = []
+all_face_names = []
 process_this_frame = True
 
 
@@ -51,7 +56,7 @@ def load_db():
     with open('sign-in-form.csv') as csv_file:
         reader = csv.reader(csv_file)
         for row in reader:
-            member = {'name': row[0], 'times': row[1]}
+            member = {'name': str(row[0]), 'times': int(row[1])}
             sign_in_list.append(member)
     return sign_in_list
 
@@ -61,12 +66,9 @@ class WriteToFile:
         self.data_lst = data_lst
         self.file_type = file_type
 
-    def save(self):
-        if 'csv' == self.file_type:
-            print('hello csv')
-        elif 'json' == self.file_type:
-            print('hello json')
-        print(self.data_lst)
+    def arrive(self):
+        for member in self.data_lst:
+            print(member)
 
 
 while True:
@@ -119,15 +121,38 @@ while True:
     # Display the resulting image
     cv2.imshow('Video', frame)
 
+    if len(face_names) >= 1:
+        for face in face_names:
+            all_face_names.append(face)
+
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         members = load_db()
-        # json_dst = WriteToFile(face_names, 'json')
-        # csv_dst = WriteToFile(face_names, 'csv')
-        # json_dst.save()
-        # csv_dst.save()
+        arrive_in_lst = []
+        for face in list(set(all_face_names)):
+            arrive_in_lst.append(face)
+
+        update_members = []
+        for member in members:
+            for face in arrive_in_lst:
+                if member['name'] == face:
+                    update_members.append(
+                        {
+                            'name': face,
+                            'times': int(member['times']) + 1
+                        }
+                    )
+        print(update_members)
         break
 
 # Release handle to the webcam
+
+# Save (commit) the changes
+conn.commit()
+
+# We can also close the connection if we are done with it.
+# Just be sure any changes have been committed or they will be lost.
+conn.close()
+
 video_capture.release()
 cv2.destroyAllWindows()
