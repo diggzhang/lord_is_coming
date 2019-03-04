@@ -1,0 +1,28 @@
+{
+  "name": "lord_is_coming",
+  "version": "1.0.0",
+  "description": "lord_is_coming ---",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diggzhang/lord_is_coming.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diggzhang/lord_is_coming/issues"
+  },
+  "homepage": "https://github.com/diggzhang/lord_is_coming#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "serve": "^10.1.2",
+    "sqlite-to-json": "^0.1.3",
+    "sqlite3": "^4.0.6"
+  }
+}
