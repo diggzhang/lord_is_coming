@@ -1,3 +1,7 @@
+初步调研后确认方案是使用dlib为主产生的一些类库，结合OpenCV已经有人实现了
+
+https://github.com/vipstone/faceai
+
 ```shell
 pyenv local face_dect_env
 ```
@@ -8,8 +12,14 @@ pyenv local face_dect_env
 brew install cmake
 git clone https://github.com/davisking/dlib.git
 cd dlib
-mkdir build; cd build; cmake ..; cmake --build .
+mkdir build
+cd build
+cmake ..
+cmake --build .
 cd ..
 python3 setup.py install
 ```
 
+```
+pip3 install face_recognition
+```
