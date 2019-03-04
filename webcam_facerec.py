@@ -118,7 +118,9 @@ while True:
 # Save (commit) the changes
 # We can also close the connection if we are done with it.
 # Just be sure any changes have been committed or they will be lost.
+c.close()
 conn.commit()
+conn.close()
 
 # Release handle to the webcam
 video_capture.release()
