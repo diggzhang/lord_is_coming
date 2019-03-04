@@ -22,7 +22,7 @@ biden_image = face_recognition.load_image_file("biden.jpg")
 biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
 # Load a own picture and learn how to recognize it.
-xingze_image = face_recognition.load_image_file("/Users/xingze/Desktop/xingze.png")
+xingze_image = face_recognition.load_image_file("xingze.png")
 xingze_face_encoding = face_recognition.face_encodings(xingze_image)[0]
 
 # Create arrays of known face encodings and their names
