@@ -1,6 +1,4 @@
 import face_recognition
-import json
-import csv
 import cv2
 import sqlite3
 
@@ -16,6 +14,7 @@ import sqlite3
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
+# Initial database
 conn = sqlite3.connect('sign-in.db')
 c = conn.cursor()
 
@@ -49,27 +48,6 @@ face_encodings = []
 face_names = []
 all_face_names = []
 process_this_frame = True
-
-
-def load_db():
-    sign_in_list = []
-    with open('sign-in-form.csv') as csv_file:
-        reader = csv.reader(csv_file)
-        for row in reader:
-            member = {'name': str(row[0]), 'times': int(row[1])}
-            sign_in_list.append(member)
-    return sign_in_list
-
-
-class WriteToFile:
-    def __init__(self, data_lst, file_type):
-        self.data_lst = data_lst
-        self.file_type = file_type
-
-    def arrive(self):
-        for member in self.data_lst:
-            print(member)
-
 
 while True:
     # Grab a single frame of video
@@ -127,32 +105,21 @@ while True:
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        members = load_db()
-        arrive_in_lst = []
-        for face in list(set(all_face_names)):
-            arrive_in_lst.append(face)
-
-        update_members = []
-        for member in members:
-            for face in arrive_in_lst:
-                if member['name'] == face:
-                    update_members.append(
-                        {
-                            'name': face,
-                            'times': int(member['times']) + 1
-                        }
-                    )
-        print(update_members)
+        arrive_in_lst = list(set(all_face_names))
+        arrive_in_lst = '\'' + '\',\''.join(arrive_in_lst) + '\''
+        sql_str = """
+        update members set times = times + 100
+        where name in ({update_list})
+        """.format(update_list=arrive_in_lst)
+        print(sql_str)
+        c.execute(sql_str)
         break
 
-# Release handle to the webcam
-
 # Save (commit) the changes
-conn.commit()
-
 # We can also close the connection if we are done with it.
 # Just be sure any changes have been committed or they will be lost.
-conn.close()
+conn.commit()
 
+# Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
