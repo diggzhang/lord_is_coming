@@ -23,3 +23,12 @@ python3 setup.py install
 ```
 pip3 install face_recognition
 ```
+
+完成核心示例代码
+
+初步预想逻辑是：
+
+1. 刷脸
+2. 记录学号
+3. 写入db
+4. 前端展示
