@@ -1,6 +1,8 @@
 import face_recognition
 import cv2
+import sys
 import sqlite3
+from load_faces import face_db
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -18,6 +20,7 @@ video_capture = cv2.VideoCapture(0)
 conn = sqlite3.connect('sign-in.db')
 c = conn.cursor()
 
+"""
 # Load a sample picture and learn how to recognize it.
 obama_image = face_recognition.load_image_file("./images/obama.jpg")
 obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
@@ -41,6 +44,12 @@ known_face_names = [
     "Joe Biden",
     "xingze"
 ]
+"""
+
+faces = face_db()
+known_face_encodings = faces["encoding"]
+known_face_names = faces["names"]
+
 
 # Initialize some variables
 face_locations = []
