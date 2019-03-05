@@ -42,3 +42,7 @@ Run it
 ```shell
 make
 ```
+
+```shell
+npm run start
+```
