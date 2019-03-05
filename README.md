@@ -3,11 +3,16 @@ lord_is_coming
 
 See who is coming to class.
 
+打开摄像头后扫描到教室学生脸部，标识出谁到场，然后给出勤的脸部加分，放到前端显示出勤情况。
+
+![](./docs/frontend.png)
+
 ## Dev env
 
 - OS: macOS 10.14.3
 - Python: 3.6.0
 - Dependency package: see `./requirements.txt`
+- Core inspiration: [face_recognition](https://github.com/ageitgey/face_recognition)
 
 ## Kick start
 
@@ -47,3 +52,9 @@ make
 ```shell
 npm run start
 ```
+
+Todo:
+
+- [ ] 获取班级人像信息
+- [ ] 动态加载面部特征数据库
+- [ ] 自动化部署
