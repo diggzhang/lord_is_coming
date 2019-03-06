@@ -17,35 +17,9 @@ from load_faces import face_db
 video_capture = cv2.VideoCapture(0)
 
 # Initial database
+# Load faces endcoding
 conn = sqlite3.connect('sign-in.db')
 c = conn.cursor()
-
-"""
-# Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("./images/obama.jpg")
-obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
-
-# Load a second sample picture and learn how to recognize it.
-biden_image = face_recognition.load_image_file("./images/biden.jpg")
-biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
-
-# Load a own picture and learn how to recognize it.
-xingze_image = face_recognition.load_image_file("./images/xingze.png")
-xingze_face_encoding = face_recognition.face_encodings(xingze_image)[0]
-
-# Create arrays of known face encodings and their names
-known_face_encodings = [
-    obama_face_encoding,
-    biden_face_encoding,
-    xingze_face_encoding
-]
-known_face_names = [
-    "Barack Obama",
-    "Joe Biden",
-    "xingze"
-]
-"""
-
 faces = face_db()
 known_face_encodings = faces["encoding"]
 known_face_names = faces["names"]
@@ -114,8 +88,7 @@ while True:
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        arrive_in_lst = list(set(all_face_names))
-        arrive_in_lst = '\'' + '\',\''.join(arrive_in_lst) + '\''
+        arrive_in_lst = '\'' + '\',\''.join(list(set(all_face_names))) + '\''
         sql_str = """
         update members set times = times + 100
         where name in ({update_list})

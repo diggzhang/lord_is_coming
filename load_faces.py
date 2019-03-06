@@ -55,9 +55,7 @@ def face_db():
 
 
 def main():
-    # print(
-    face_db()
-    # )
+    print(face_db())
 
 
 if __name__ == '__main__':
